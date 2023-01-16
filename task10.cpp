@@ -2,133 +2,148 @@
 #include <windows.h>
 using namespace std;
 
-
-
-
 void maze();
 void gotoxy(int x , int y);
 char getCharATXY(short int x , short int y);
-void clear(int x , int y , char previous);
-void printGhost(int x , int y);
+void erase(int x , int y);
+void printPacman(int x , int y);
+int gameScore(int score);
 
 
-main()
+
+main(){
+
+int pacmanX = 28;
+int pacmanY = 1;
+int score = 0;
+
+int result ;
+bool gameRunning = true;
+
+system("cls");
+maze();
+printPacman(pacmanX , pacmanY);
+
+while(gameRunning)
 {
-     int gx = 28;
-     int gy = 1;
-     
-     int g2x =28;
-     int g2y = 2;
-     
-     string direction = "right";
-     string directionTwo = "up";
-     
-     char previousChar = ' ';
-     char secondChar = ' ';
-     
-     system("cls");
-     maze();
-     printGhost(gx , gy);
-     printGhost(g2x , g2y);
-     while (true)
-     {
-        Sleep(100);
-
-        if (direction == "right")
-        {
-            char nextLocation = getCharATXY(gx + 1 , gy);
-            if (nextLocation == '|')
-            {
-                direction = "left";
-            }
-
-            else if (nextLocation == ' ' || nextLocation == '-')
-            {
-                clear(gx , gy , previousChar);
-                gx = gx + 1;
-
-                previousChar = nextLocation;
-                printGhost(gx , gy);
-            }            
-        }
-
-
-
-        if (direction == "left")
-        {
-            char nextLocation = getCharATXY(gx - 1 , gy);
-            if (nextLocation == '|')
-            {
-                direction = "right";
-            }
-
-            else if (nextLocation == ' ' || nextLocation == '-')
-            {
-                clear(gx , gy , previousChar);
-                gx = gx - 1;
-
-                previousChar = nextLocation;
-                printGhost(gx , gy);
-            }            
-        }
-
-
-        if (directionTwo == "up")
-        {
-            char nextLocation = getCharATXY(g2x , g2y - 1);
-            if (nextLocation == '#' || nextLocation == '|')
-            {
-                directionTwo = "down";
-            }
-
-            else if (nextLocation == ' ' || nextLocation == '-')
-            {
-                clear(g2x , g2y , secondChar);
-                g2y = g2y - 1;
-                
-                secondChar = nextLocation;
-                printGhost(g2x , g2y);
-            }
-                      
-        }
-
-        
-        if (directionTwo == "down")
-        {
-            char nextLocation = getCharATXY(g2x , g2y + 1);
-            if (nextLocation == '#' || nextLocation == '|')
-            {
-                directionTwo = "up";
-            }
-
-            else if (nextLocation == ' ' || nextLocation == '-')
-            {
-                clear(g2x , g2y , secondChar);
-                g2y = g2y + 1;
-                
-                secondChar = nextLocation;
-                printGhost(g2x , g2y);
-            }
-                      
-        }
-        
-
-         
-        }
-     
-     
-
-     }
-
-
-     
-     
 
 
 
 
+if(GetAsyncKeyState(VK_LEFT))
+{
+
+ char nextLocation = getCharATXY(pacmanX - 1 , pacmanY);
+ if (nextLocation == ' ')
+ {
+  erase(pacmanX , pacmanY);
+  pacmanX = pacmanX - 1;
+  printPacman(pacmanX , pacmanY);
+ }
+ if (nextLocation == '-')
+ {
+  erase(pacmanX , pacmanY);
+  pacmanX = pacmanX - 1;
+  printPacman(pacmanX , pacmanY);
+
+  score= score + 1;
+  gotoxy(1,1);
+  cout << "Score is : " <<score;
+ }
 
 
+
+}
+
+
+if(GetAsyncKeyState(VK_RIGHT))
+{
+
+ char nextLocation = getCharATXY(pacmanX + 1 , pacmanY);
+ if (nextLocation == ' ')
+ {
+  erase(pacmanX , pacmanY);
+  pacmanX = pacmanX + 1;
+  printPacman(pacmanX , pacmanY);
+ 
+}
+ if (nextLocation == '-')
+ {
+  erase(pacmanX , pacmanY);
+  pacmanX = pacmanX + 1;
+  printPacman(pacmanX , pacmanY);
+   
+  score= score + 1;
+  gotoxy(1,1);
+  cout << "Score is : " <<score;
+
+
+  }
+
+
+
+ 
+}
+ 
+
+
+
+if(GetAsyncKeyState(VK_UP))
+{
+
+ char nextLocation = getCharATXY(pacmanX, pacmanY - 1);
+ if (nextLocation == ' ')
+ {
+  erase(pacmanX , pacmanY);
+  pacmanY = pacmanY - 1;
+  printPacman(pacmanX , pacmanY);
+ }
+  if (nextLocation == '-')
+ {
+  erase(pacmanX , pacmanY);
+  pacmanY = pacmanY - 1;
+  printPacman(pacmanX , pacmanY);
+  
+  score= score + 1;
+  gotoxy(1,1);
+  cout << "Score is : " <<score;
+  
+
+
+ }
+
+}
+
+
+if(GetAsyncKeyState(VK_DOWN))
+{
+
+ char nextLocation = getCharATXY(pacmanX, pacmanY + 1);
+ if (nextLocation == ' ')
+ {
+  erase(pacmanX , pacmanY);
+  pacmanY = pacmanY + 1;
+  printPacman(pacmanX , pacmanY);
+ }
+
+  if (nextLocation == '-')
+ {
+  erase(pacmanX , pacmanY);
+  pacmanY = pacmanY + 1;
+  printPacman(pacmanX , pacmanY);
+  
+  score= score + 1;
+  gotoxy(1,1);
+  cout << "Score is : " <<score;
+
+
+ }
+
+}
+
+Sleep(200);
+}
+}
 
 
 void maze()
@@ -144,8 +159,8 @@ cout << "                        || --         |%|           - -  |%|---        
 cout << "                        || --         %%%%%%%%%%%%%%- -  |%|---       %%%%%%%%%%%%%%%%%%%      |%|--           %%%% -  ||    " <<endl;
 cout << "                        || --                    |%| -                |%| ------               |%|-             |%|-   ||    " <<endl;
 cout << "                        || --      - - --  - -  -|%| -                |%| ------- |%|           -               |%|-   ||    " <<endl;
-cout << "                        || --|%|   |%|%%%%|%| -  |%| -  |%|               ------- |%|            --|%|          |%|-   ||    " <<endl;
-cout << "                        || --|%|   |%|    |%| - -|%| - - %%%%%%%%%%%%%%% -------  |%|             -|%|-                ||    " <<endl;
+cout << "                        || --|%|   |%|%%%%|%| -  |%| - |%|                ------- |%|            --|%|          |%|-   ||    " <<endl;
+cout << "                        || --|%|   |%|    |%| - -  |%|- - %%%%%%%%%%%%%%% ------- |%|             -|%|-                ||    " <<endl;
 cout << "                        || --|%|   |%|    |%| - -                  ---|%|  %%%%%%%%              - |%|-                ||    " <<endl;
 cout << "                        || --|%|                -                  ---|%|                    |%| --|%|-                ||    " <<endl;
 cout << "                        || --|%|   %%%%%%%%%%%%%%%           ---|%|%%%%%%%%%%%%%%            |%| --|%|%%%%%%%%%%%%%    ||    " <<endl;
@@ -160,21 +175,6 @@ cout << "                        ||     ----------------------------------------
 cout << "                        #################################################################################################    " <<endl;  
 
 
-}
-
-
-
-void clear(int x , int y , char previous)
-{
-    gotoxy(x , y);
-    cout << previous;
-}
-
-
-void printGhost(int x , int y){
-
-    gotoxy(x,y);
-    cout << "G";
 }
 
 
@@ -197,4 +197,28 @@ char getCharATXY(short int x , short int y){
   coordBufsize.Y = 1;
   return ReadConsoleOutput(GetStdHandle(STD_OUTPUT_HANDLE), &ci , coordBufsize , xy , &rect) ? ci.Char.AsciiChar :' ';
 
+}
+
+
+
+void erase(int x , int y){
+
+ gotoxy(x , y);
+ cout << " " ;
+ 
+}
+
+void printPacman(int x , int y){
+
+  gotoxy(x,y);
+  cout << "p";
+}
+
+
+
+int gameScore(int score)
+{
+  
+  int score2 = score + 2;
+  return score2;
 }
